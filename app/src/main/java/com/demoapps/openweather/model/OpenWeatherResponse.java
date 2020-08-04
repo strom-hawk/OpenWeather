@@ -34,6 +34,10 @@ public class OpenWeatherResponse {
     @Expose
     private ArrayList<Climate> climate;
 
+    @SerializedName("sys")
+    @Expose
+    private SunTiming sunTiming;
+
     //getter weatherDetails
     public WeatherDetails getWeatherDetails() {
         return weatherDetails;
@@ -92,5 +96,15 @@ public class OpenWeatherResponse {
     //setter climate
     public void setClimate(ArrayList<Climate> climate) {
         this.climate = climate;
+    }
+
+    //getter sunTiming
+    public SunTiming getSunTiming() {
+        return sunTiming;
+    }
+
+    //setter sunTiming
+    public void setSunTiming(SunTiming sunTiming) {
+        this.sunTiming = sunTiming;
     }
 }

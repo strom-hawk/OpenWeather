@@ -11,5 +11,6 @@ object ApplicationConstants {
     val CELSIUS_REPRESENTATION = "°C"
     val TXN_STATUS_200 = "200"
     val TXN_STATUS_404 = "404"
+    val TXN_STATUS_404_NUMBER = 404
     val KELVIN_DIFFERENCE = 273.15F
 }

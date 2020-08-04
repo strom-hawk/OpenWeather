@@ -17,12 +17,12 @@ class HomeScreenViewModel(
     private val LOCATION = "Bangalore"
 
 
-    fun getCityWeatherDetails() {
+    fun getCityWeatherDetails(cityName: String) {
         val apiServices = RetrofitClient.getApiClient(ApplicationConstants.BASE_URL)
         if (apiServices != null) {
             compositeDisposable?.add(apiServices.getCurrentWeatherData(
                 ApplicationConstants.API_KEY,
-                LOCATION
+                cityName
             )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())

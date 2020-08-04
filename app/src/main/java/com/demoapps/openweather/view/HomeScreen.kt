@@ -7,6 +7,7 @@ import com.demoapps.openweather.model.OpenWeatherResponse
 import com.demoapps.openweather.utils.ApplicationConstants
 import com.demoapps.openweather.viewmodel.HomeScreenViewModel
 import kotlinx.android.synthetic.main.activity_homescreen.*
+import retrofit2.HttpException
 
 /*
 *This class is the landing page of the Open Weather application
@@ -28,7 +29,7 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
 
     private fun bindView() {
         getWeaterButton.setOnClickListener {
-            homeScreenViewModel?.getCityWeatherDetails()
+            homeScreenViewModel?.getCityWeatherDetails(etCity.text.toString())
         }
     }
 
@@ -48,7 +49,12 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
     }
 
     override fun onApiFailed(error: Throwable) {
-        getWeaterButton.text = getString(R.string.something_went_wrong)
+
+        if((error as HttpException).code().equals(ApplicationConstants.TXN_STATUS_404_NUMBER)){
+            getWeaterButton.text = error.message()
+        }else{
+            getWeaterButton.text = getString(R.string.something_went_wrong)
+        }
     }
 
     private fun convertKelvinToCelcius(tempInKelvin: Float): Float {
