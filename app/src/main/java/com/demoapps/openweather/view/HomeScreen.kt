@@ -35,11 +35,16 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
     override fun onApiCalled() {}
 
     override fun onApiSuccess(openWeatherResponse: OpenWeatherResponse) {
-        getWeaterButton.text = openWeatherResponse.weatherDetails.currentTemperature
-        val tempInKelvin = openWeatherResponse.weatherDetails.currentTemperature.toFloat()
-        val tempInCelsius = convertKelvinToCelcius(tempInKelvin).toString()
-            .substringBefore(ApplicationConstants.DOT_DELIMITTER) + ApplicationConstants.CELSIUS_REPRESENTATION
-        getWeaterButton.text = tempInCelsius
+        if(openWeatherResponse.txnStatus.equals(ApplicationConstants.TXN_STATUS_200)){
+            val tempInKelvin = openWeatherResponse.weatherDetails.currentTemperature.toFloat()
+            val tempInCelsius = convertKelvinToCelcius(tempInKelvin).toString()
+                .substringBefore(ApplicationConstants.DOT_DELIMITTER) + ApplicationConstants.CELSIUS_REPRESENTATION
+            getWeaterButton.text = tempInCelsius
+        }else if(openWeatherResponse.txnStatus.equals(ApplicationConstants.TXN_STATUS_404)){
+            getWeaterButton.text = openWeatherResponse.txnMessage
+        }else{
+            getWeaterButton.text = getString(R.string.something_went_wrong)
+        }
     }
 
     override fun onApiFailed(error: Throwable) {
