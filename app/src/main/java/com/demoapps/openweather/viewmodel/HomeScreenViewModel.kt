@@ -22,7 +22,7 @@ class HomeScreenViewModel(
         if (apiServices != null) {
             compositeDisposable?.add(apiServices.getCurrentWeatherData(
                 ApplicationConstants.API_KEY,
-                cityName
+                LOCATION
             )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())

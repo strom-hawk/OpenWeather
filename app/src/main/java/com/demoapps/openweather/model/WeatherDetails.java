@@ -20,6 +20,10 @@ public class WeatherDetails {
     @Expose
     private String humidity;
 
+    @SerializedName("feels_like")
+    @Expose
+    private String feelsLike;
+
     //getter currentTemperature
     public String getCurrentTemperature() {
         return currentTemperature;
@@ -44,8 +48,19 @@ public class WeatherDetails {
     public String getHumidity() {
         return humidity;
     }
+
     //setter humidity
     public void setHumidity(String humidity) {
         this.humidity = humidity;
+    }
+
+    //getter feelsLike
+    public String getFeelsLike() {
+        return feelsLike;
+    }
+
+    //setter feelsLike
+    public void setFeelsLike(String feelsLike) {
+        this.feelsLike = feelsLike;
     }
 }

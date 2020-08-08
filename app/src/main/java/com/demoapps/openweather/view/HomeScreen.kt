@@ -1,6 +1,9 @@
 package com.demoapps.openweather.view
 
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import com.demoapps.openweather.R
 import com.demoapps.openweather.interfaces.WeatherDetailsFlowCallBack
 import com.demoapps.openweather.model.OpenWeatherResponse
@@ -8,6 +11,7 @@ import com.demoapps.openweather.utils.ApplicationConstants
 import com.demoapps.openweather.viewmodel.HomeScreenViewModel
 import kotlinx.android.synthetic.main.activity_homescreen.*
 import retrofit2.HttpException
+
 
 /*
 *This class is the landing page of the Open Weather application
@@ -18,6 +22,7 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.supportActionBar?.hide()
         setContentView(R.layout.activity_homescreen)
         init()
         bindView()
@@ -40,20 +45,20 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
             val tempInKelvin = openWeatherResponse.weatherDetails.currentTemperature.toFloat()
             val tempInCelsius = convertKelvinToCelcius(tempInKelvin).toString()
                 .substringBefore(ApplicationConstants.DOT_DELIMITTER) + ApplicationConstants.CELSIUS_REPRESENTATION
-            getWeaterButton.text = tempInCelsius
+            //getWeaterButton.text = tempInCelsius
         }else if(openWeatherResponse.txnStatus.equals(ApplicationConstants.TXN_STATUS_404)){
-            getWeaterButton.text = openWeatherResponse.txnMessage
+            //getWeaterButton.text = openWeatherResponse.txnMessage
         }else{
-            getWeaterButton.text = getString(R.string.something_went_wrong)
+            //getWeaterButton.text = getString(R.string.something_went_wrong)
         }
     }
 
     override fun onApiFailed(error: Throwable) {
 
         if((error as HttpException).code().equals(ApplicationConstants.TXN_STATUS_404_NUMBER)){
-            getWeaterButton.text = error.message()
+            //getWeaterButton.text = error.message()
         }else{
-            getWeaterButton.text = getString(R.string.something_went_wrong)
+            //getWeaterButton.text = getString(R.string.something_went_wrong)
         }
     }
 
