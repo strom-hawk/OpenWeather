@@ -1,5 +1,6 @@
 package com.demoapps.openweather.viewmodel
 
+import android.widget.ProgressBar
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 
@@ -7,8 +8,9 @@ import io.reactivex.disposables.CompositeDisposable
 *This class is used as base view model for every viewmodel
 */
 
-public abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
     protected var compositeDisposable: CompositeDisposable? = null
+
 
     init {
         getCompositeDisposable()
@@ -19,6 +21,8 @@ public abstract class BaseViewModel : ViewModel() {
             compositeDisposable = CompositeDisposable()
         }
     }
+
+
 
     override fun onCleared() {
         super.onCleared()

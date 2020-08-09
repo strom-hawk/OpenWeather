@@ -8,6 +8,8 @@ import com.demoapps.openweather.R
 import com.demoapps.openweather.interfaces.WeatherDetailsFlowCallBack
 import com.demoapps.openweather.model.OpenWeatherResponse
 import com.demoapps.openweather.utils.ApplicationConstants
+import com.demoapps.openweather.utils.CommonUtils
+import com.demoapps.openweather.utils.Router
 import com.demoapps.openweather.viewmodel.HomeScreenViewModel
 import kotlinx.android.synthetic.main.activity_homescreen.*
 import retrofit2.HttpException
@@ -34,7 +36,16 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
 
     private fun bindView() {
         getWeaterButton.setOnClickListener {
-            homeScreenViewModel?.getCityWeatherDetails(etCity.text.toString())
+            validateAndProceed()
+        }
+    }
+
+    private fun validateAndProceed(){
+        if(etCity.text.toString().equals(ApplicationConstants.EMPTY_STRING)){
+            CommonUtils.showAlertDialog(this, getString(R.string.invalid_city_name))
+        }else{
+            Router.city = etCity.text.toString()
+            homeScreenViewModel?.getCityWeatherDetails()
         }
     }
 
@@ -45,20 +56,24 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
             val tempInKelvin = openWeatherResponse.weatherDetails.currentTemperature.toFloat()
             val tempInCelsius = convertKelvinToCelcius(tempInKelvin).toString()
                 .substringBefore(ApplicationConstants.DOT_DELIMITTER) + ApplicationConstants.CELSIUS_REPRESENTATION
-            //getWeaterButton.text = tempInCelsius
+
+            tvLocation.text = openWeatherResponse.city
+            tvDateTime.text = ""
+            tvCurrentTemperature.text = tempInCelsius
+            tvWeaterDescription.text = openWeatherResponse.climate[0].climateTitle
         }else if(openWeatherResponse.txnStatus.equals(ApplicationConstants.TXN_STATUS_404)){
-            //getWeaterButton.text = openWeatherResponse.txnMessage
+            CommonUtils.showAlertDialog(this, openWeatherResponse.txnMessage)
         }else{
-            //getWeaterButton.text = getString(R.string.something_went_wrong)
+            CommonUtils.showAlertDialog(this, getString(R.string.something_went_wrong))
         }
     }
 
     override fun onApiFailed(error: Throwable) {
 
         if((error as HttpException).code().equals(ApplicationConstants.TXN_STATUS_404_NUMBER)){
-            //getWeaterButton.text = error.message()
+            CommonUtils.showAlertDialog(this, error.message())
         }else{
-            //getWeaterButton.text = getString(R.string.something_went_wrong)
+            CommonUtils.showAlertDialog(this, getString(R.string.something_went_wrong))
         }
     }
 

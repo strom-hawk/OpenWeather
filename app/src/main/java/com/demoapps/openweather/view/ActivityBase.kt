@@ -2,7 +2,6 @@ package com.demoapps.openweather.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.demoapps.openweather.R
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class ActivityBase: AppCompatActivity() {

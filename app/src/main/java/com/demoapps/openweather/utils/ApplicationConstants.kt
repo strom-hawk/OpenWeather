@@ -13,4 +13,5 @@ object ApplicationConstants {
     val TXN_STATUS_404 = "404"
     val TXN_STATUS_404_NUMBER = 404
     val KELVIN_DIFFERENCE = 273.15F
+    val EMPTY_STRING = ""
 }

@@ -9,5 +9,10 @@
     <string name="sunrise_textView">Sunrise</string>
     <string name="wind_textView">Wind</string>
     <string name="feels_like_textView">Feels Like</string>
+    <string name="alert_title">Alert Title</string>
+    <string name="alert_message">Alert message</string>
+    <string name="positive_button">Positive Button</string>
+    <string name="negative_button">Negative Button</string>
+    <string name="invalid_city_name">Please enter city name</string>
 
 </resources>

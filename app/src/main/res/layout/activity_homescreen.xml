@@ -12,33 +12,34 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1">
+        android:layout_weight="0.1"
+        android:layout_marginTop="@dimen/dp_10">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_50"
             android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_20"
-            android:background="@drawable/edit_text_background">
+            android:background="@drawable/edit_text_background"
+            android:padding="@dimen/dp_5">
 
             <EditText
                 android:id="@+id/etCity"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:hint="@string/city_search_box_hint"
-                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                android:paddingStart="@dimen/dp_10"/>
 
             <ImageButton
                 android:id="@+id/getWeaterButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dp_20"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_baseline_search_24" />
 
@@ -74,8 +75,8 @@
 
         <ImageView
             android:id="@+id/ivWeather"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="@dimen/dp_180"
+            android:layout_height="@dimen/dp_180"
             android:layout_centerInParent="true"
             android:src="@drawable/sun" />
 
@@ -98,7 +99,7 @@
             android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif-condensed-medium"
             android:text="@string/current_weather_description"
-            android:layout_marginTop="@dimen/dp_10"/>
+            android:layout_marginTop="@dimen/dp_5"/>
 
     </RelativeLayout>
 
@@ -129,11 +130,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/ivSunrise"
                     android:layout_width="@dimen/dp_60"
                     android:layout_height="@dimen/dp_60"
-                    android:layout_above="@id/tvSunrise"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="@dimen/dp_10"
+                    android:layout_alignParentTop="true"
                     android:src="@drawable/sunrise_filled"
                     android:tint="@color/iconTint"/>
 
@@ -144,8 +145,7 @@
                     android:layout_centerHorizontal="true"
                     android:fontFamily="sans-serif-condensed-medium"
                     android:text="@string/sunrise_textView"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="@dimen/dp_40"/>
+                    android:layout_below="@+id/ivSunrise"/>
 
                 <View
                     android:layout_width="1dp"
@@ -164,11 +164,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/ivWind"
                     android:layout_width="@dimen/dp_60"
                     android:layout_height="@dimen/dp_60"
-                    android:layout_above="@id/tvWind"
+                    android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="@dimen/dp_10"
                     android:src="@drawable/wind"
                     android:tint="@color/iconTint"/>
 
@@ -177,8 +177,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="@dimen/dp_40"
+                    android:layout_below="@id/ivWind"
                     android:fontFamily="sans-serif-condensed-medium"
                     android:text="@string/wind_textView" />
 
@@ -198,12 +197,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/ivFeelsLike"
                     android:layout_width="@dimen/dp_60"
                     android:layout_height="@dimen/dp_60"
-                    android:layout_above="@id/tvFeelsLike"
+                    android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-
-                    android:layout_marginBottom="@dimen/dp_10"
                     android:src="@drawable/temperature"
                     android:tint="@color/iconTint"
                     android:padding="@dimen/dp_10"/>
@@ -213,8 +211,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="@dimen/dp_40"
+                    android:layout_below="@id/ivFeelsLike"
                     android:fontFamily="sans-serif-condensed-medium"
                     android:text="@string/feels_like_textView" />
 

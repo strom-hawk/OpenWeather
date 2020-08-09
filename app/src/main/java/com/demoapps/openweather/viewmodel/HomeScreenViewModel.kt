@@ -4,6 +4,7 @@ import com.demoapps.openweather.interfaces.WeatherDetailsFlowCallBack
 import com.demoapps.openweather.model.OpenWeatherResponse
 import com.demoapps.openweather.utils.ApplicationConstants
 import com.demoapps.openweather.utils.RetrofitClient
+import com.demoapps.openweather.utils.Router
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -14,15 +15,13 @@ import io.reactivex.schedulers.Schedulers
 class HomeScreenViewModel(
     private var weatherDetailsFlowCallBack: WeatherDetailsFlowCallBack
 ) : BaseViewModel() {
-    private val LOCATION = "Bangalore"
 
-
-    fun getCityWeatherDetails(cityName: String) {
+    fun getCityWeatherDetails() {
         val apiServices = RetrofitClient.getApiClient(ApplicationConstants.BASE_URL)
         if (apiServices != null) {
             compositeDisposable?.add(apiServices.getCurrentWeatherData(
                 ApplicationConstants.API_KEY,
-                LOCATION
+                Router.city
             )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
