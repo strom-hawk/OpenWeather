@@ -110,7 +110,8 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
     private fun initLiveData(){
         val latLongObservable = Observer<Boolean>{
             if(Router.locationChanged.value!!){
-                tvLocation.text = Router.currentLatitude + ", " + Router.currentLongitude
+                Router.locationChanged.value = false
+                homeScreenViewModel?.getLatLongWeatherDetails()
             }
         }
 

@@ -19,9 +19,29 @@ class HomeScreenViewModel(
     fun getCityWeatherDetails() {
         val apiServices = RetrofitClient.getApiClient(ApplicationConstants.BASE_URL)
         if (apiServices != null) {
-            compositeDisposable?.add(apiServices.getCurrentWeatherData(
+            compositeDisposable?.add(
+                apiServices.getCurrentWeatherData(
+                    ApplicationConstants.API_KEY,
+                    Router.city
+                )
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.computation())
+                    .subscribe({ response ->
+                        handleResponse(response)
+                    }, { error ->
+                        handleError(error)
+                    })
+            )
+        }
+    }
+
+    fun getLatLongWeatherDetails() {
+        val apiServices = RetrofitClient.getApiClient(ApplicationConstants.BASE_URL)
+        if (apiServices != null) {
+            compositeDisposable?.add(apiServices.getCurrentLocationWeather(
                 ApplicationConstants.API_KEY,
-                Router.city
+                Router.currentLatitude,
+                Router.currentLongitude
             )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
@@ -32,6 +52,7 @@ class HomeScreenViewModel(
                 })
             )
         }
+
     }
 
     private fun handleResponse(openWeatherResponse: OpenWeatherResponse) {
