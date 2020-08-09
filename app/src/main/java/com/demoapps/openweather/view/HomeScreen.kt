@@ -94,7 +94,8 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
         tvLocation.text = openWeatherResponse.city
         tvDateTime.text = CommonUtils.getCurrentDateAndTime()
         tvCurrentTemperature.text = tempInCelsius
-        tvWeaterDescription.text = openWeatherResponse.climate[0].climateTitle
+        tvWeaterDescription.text = openWeatherResponse.climate[0].climateDescription
+        setUpWeatherIcon(openWeatherResponse)
     }
 
     private fun getLatLongFlow(){
@@ -114,7 +115,6 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
                 homeScreenViewModel?.getLatLongWeatherDetails()
             }
         }
-
         Router.locationChanged.observe(this, latLongObservable)
     }
 
@@ -133,6 +133,32 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
                 Router.locationChanged.value = true
             }else{
                 CommonUtils.showAlertDialog(this, getString(R.string.location_error), false)
+            }
+        }
+    }
+
+    private fun setUpWeatherIcon(openWeatherResponse: OpenWeatherResponse){
+        val calendar = Calendar.getInstance()
+        val hours = calendar.get(Calendar.HOUR)
+        if(hours>=6 && hours <=6){
+            if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.CLEAR, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.sun)
+            }else if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.RAIN, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.sun_clouds_rain)
+            }else if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.THUNDERSTORM, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.sun_clouds_rain_thunder)
+            }else{
+                ivWeather.setImageResource(R.drawable.sun_clouds)
+            }
+        }else{
+            if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.CLEAR, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.moon)
+            }else if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.RAIN, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.moon_rain_clouds)
+            }else if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.THUNDERSTORM, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.moon_rain_clouds_thunder)
+            }else{
+                ivWeather.setImageResource(R.drawable.moon_clouds)
             }
         }
     }
