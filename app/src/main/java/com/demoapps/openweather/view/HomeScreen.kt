@@ -42,7 +42,7 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
 
     private fun validateAndProceed(){
         if(etCity.text.toString().equals(ApplicationConstants.EMPTY_STRING)){
-            CommonUtils.showAlertDialog(this, getString(R.string.invalid_city_name))
+            CommonUtils.showAlertDialog(this, getString(R.string.invalid_city_name), false)
         }else{
             Router.city = etCity.text.toString()
             homeScreenViewModel?.getCityWeatherDetails()
@@ -62,18 +62,18 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
             tvCurrentTemperature.text = tempInCelsius
             tvWeaterDescription.text = openWeatherResponse.climate[0].climateTitle
         }else if(openWeatherResponse.txnStatus.equals(ApplicationConstants.TXN_STATUS_404)){
-            CommonUtils.showAlertDialog(this, openWeatherResponse.txnMessage)
+            CommonUtils.showAlertDialog(this, openWeatherResponse.txnMessage, false)
         }else{
-            CommonUtils.showAlertDialog(this, getString(R.string.something_went_wrong))
+            CommonUtils.showAlertDialog(this, getString(R.string.something_went_wrong), false)
         }
     }
 
     override fun onApiFailed(error: Throwable) {
 
         if((error as HttpException).code().equals(ApplicationConstants.TXN_STATUS_404_NUMBER)){
-            CommonUtils.showAlertDialog(this, error.message())
+            CommonUtils.showAlertDialog(this, error.message(), false)
         }else{
-            CommonUtils.showAlertDialog(this, getString(R.string.something_went_wrong))
+            CommonUtils.showAlertDialog(this, getString(R.string.something_went_wrong), false)
         }
     }
 
