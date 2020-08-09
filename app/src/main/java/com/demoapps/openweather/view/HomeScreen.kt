@@ -9,6 +9,7 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.demoapps.openweather.R
 import com.demoapps.openweather.interfaces.WeatherDetailsFlowCallBack
 import com.demoapps.openweather.model.OpenWeatherResponse
@@ -42,6 +43,7 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
 
     private fun init() {
         homeScreenViewModel = HomeScreenViewModel(this)
+        initLiveData()
         getLatLongFlow()
     }
 
@@ -105,6 +107,16 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
         }
     }
 
+    private fun initLiveData(){
+        val latLongObservable = Observer<Boolean>{
+            if(Router.locationChanged.value!!){
+                tvLocation.text = Router.currentLatitude + ", " + Router.currentLongitude
+            }
+        }
+
+        Router.locationChanged.observe(this, latLongObservable)
+    }
+
     private fun getLatLong(){
         if (ActivityCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -117,6 +129,7 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
                 val longitude = locationGPS.getLongitude()
                 Router.currentLatitude = latitude.toString()
                 Router.currentLongitude = longitude.toString()
+                Router.locationChanged.value = true
             }else{
                 CommonUtils.showAlertDialog(this, getString(R.string.location_error), false)
             }
