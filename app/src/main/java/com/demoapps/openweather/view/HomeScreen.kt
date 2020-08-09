@@ -1,8 +1,13 @@
 package com.demoapps.openweather.view
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.demoapps.openweather.R
 import com.demoapps.openweather.interfaces.WeatherDetailsFlowCallBack
@@ -22,7 +27,10 @@ import java.util.*
 */
 
 class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
+    private val REQUEST_LOCATION = 1
+    private val FINE_LOCATION_PERMISSION = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
     private var homeScreenViewModel: HomeScreenViewModel? = null
+    private lateinit var locationManager : LocationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +42,7 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
 
     private fun init() {
         homeScreenViewModel = HomeScreenViewModel(this)
+        getLatLongFlow()
     }
 
     private fun bindView() {
@@ -68,7 +77,6 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
     }
 
     override fun onApiFailed(error: Throwable) {
-
         if((error as HttpException).code().equals(ApplicationConstants.TXN_STATUS_404_NUMBER)){
             CommonUtils.showAlertDialog(this, error.message(), false)
         }else{
@@ -87,5 +95,31 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
         tvWeaterDescription.text = openWeatherResponse.climate[0].climateTitle
     }
 
+    private fun getLatLongFlow(){
+        ActivityCompat.requestPermissions(this, FINE_LOCATION_PERMISSION, REQUEST_LOCATION);
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            CommonUtils.showGPSDialog(this, getString(R.string.location_error), true)
+        }else{
+            getLatLong()
+        }
+    }
 
+    private fun getLatLong(){
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, FINE_LOCATION_PERMISSION, REQUEST_LOCATION);
+        } else {
+            val locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            if(locationGPS != null){
+                val latitude = locationGPS.getLatitude()
+                val longitude = locationGPS.getLongitude()
+                Router.currentLatitude = latitude.toString()
+                Router.currentLongitude = longitude.toString()
+            }else{
+                CommonUtils.showAlertDialog(this, getString(R.string.location_error), false)
+            }
+        }
+    }
 }

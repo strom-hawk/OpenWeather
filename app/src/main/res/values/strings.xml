@@ -14,5 +14,6 @@
     <string name="positive_button">OK</string>
     <string name="negative_button">Negative Button</string>
     <string name="invalid_city_name">Please enter city name</string>
+    <string name="location_error">Unable to find location</string>
 
 </resources>
