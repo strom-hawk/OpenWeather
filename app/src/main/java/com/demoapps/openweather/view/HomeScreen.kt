@@ -1,9 +1,15 @@
 package com.demoapps.openweather.view
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.demoapps.openweather.R
 import com.demoapps.openweather.interfaces.WeatherDetailsFlowCallBack
 import com.demoapps.openweather.model.OpenWeatherResponse
@@ -22,7 +28,10 @@ import java.util.*
 */
 
 class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
+    private val REQUEST_LOCATION = 1
+    private val FINE_LOCATION_PERMISSION = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
     private var homeScreenViewModel: HomeScreenViewModel? = null
+    private lateinit var locationManager : LocationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +43,8 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
 
     private fun init() {
         homeScreenViewModel = HomeScreenViewModel(this)
+        initLiveData()
+        getLatLongFlow()
     }
 
     private fun bindView() {
@@ -68,7 +79,6 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
     }
 
     override fun onApiFailed(error: Throwable) {
-
         if((error as HttpException).code().equals(ApplicationConstants.TXN_STATUS_404_NUMBER)){
             CommonUtils.showAlertDialog(this, error.message(), false)
         }else{
@@ -84,8 +94,72 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
         tvLocation.text = openWeatherResponse.city
         tvDateTime.text = CommonUtils.getCurrentDateAndTime()
         tvCurrentTemperature.text = tempInCelsius
-        tvWeaterDescription.text = openWeatherResponse.climate[0].climateTitle
+        tvWeaterDescription.text = openWeatherResponse.climate[0].climateDescription
+        setUpWeatherIcon(openWeatherResponse)
     }
 
+    private fun getLatLongFlow(){
+        ActivityCompat.requestPermissions(this, FINE_LOCATION_PERMISSION, REQUEST_LOCATION);
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            CommonUtils.showGPSDialog(this, getString(R.string.location_error), true)
+        }else{
+            getLatLong()
+        }
+    }
 
+    private fun initLiveData(){
+        val latLongObservable = Observer<Boolean>{
+            if(Router.locationChanged.value!!){
+                Router.locationChanged.value = false
+                homeScreenViewModel?.getLatLongWeatherDetails()
+            }
+        }
+        Router.locationChanged.observe(this, latLongObservable)
+    }
+
+    private fun getLatLong(){
+        if (ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, FINE_LOCATION_PERMISSION, REQUEST_LOCATION);
+        } else {
+            val locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            if(locationGPS != null){
+                val latitude = locationGPS.getLatitude()
+                val longitude = locationGPS.getLongitude()
+                Router.currentLatitude = latitude.toString()
+                Router.currentLongitude = longitude.toString()
+                Router.locationChanged.value = true
+            }else{
+                CommonUtils.showAlertDialog(this, getString(R.string.location_error), false)
+            }
+        }
+    }
+
+    private fun setUpWeatherIcon(openWeatherResponse: OpenWeatherResponse){
+        val calendar = Calendar.getInstance()
+        val hours = calendar.get(Calendar.HOUR)
+        if(hours>=6 && hours <=6){
+            if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.CLEAR, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.sun)
+            }else if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.RAIN, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.sun_clouds_rain)
+            }else if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.THUNDERSTORM, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.sun_clouds_rain_thunder)
+            }else{
+                ivWeather.setImageResource(R.drawable.sun_clouds)
+            }
+        }else{
+            if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.CLEAR, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.moon)
+            }else if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.RAIN, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.moon_rain_clouds)
+            }else if(openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.THUNDERSTORM, ignoreCase = false)){
+                ivWeather.setImageResource(R.drawable.moon_rain_clouds_thunder)
+            }else{
+                ivWeather.setImageResource(R.drawable.moon_clouds)
+            }
+        }
+    }
 }

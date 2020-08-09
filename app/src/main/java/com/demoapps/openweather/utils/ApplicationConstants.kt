@@ -15,4 +15,8 @@ object ApplicationConstants {
     val KELVIN_DIFFERENCE = 273.15F
     val EMPTY_STRING = ""
     val DATE_FORMAT = "dd/M/yyyy hh:mm"
+
+    val CLEAR= "Clear"
+    val RAIN = "Rain"
+    val THUNDERSTORM = "Thunderstorm"
 }
