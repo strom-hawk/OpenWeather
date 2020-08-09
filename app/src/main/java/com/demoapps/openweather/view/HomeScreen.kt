@@ -13,6 +13,8 @@ import com.demoapps.openweather.utils.Router
 import com.demoapps.openweather.viewmodel.HomeScreenViewModel
 import kotlinx.android.synthetic.main.activity_homescreen.*
 import retrofit2.HttpException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /*
@@ -52,18 +54,15 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
     override fun onApiCalled() {}
 
     override fun onApiSuccess(openWeatherResponse: OpenWeatherResponse) {
-        if(openWeatherResponse.txnStatus.equals(ApplicationConstants.TXN_STATUS_200)){
+        if (openWeatherResponse.txnStatus.equals(ApplicationConstants.TXN_STATUS_200)) {
             val tempInKelvin = openWeatherResponse.weatherDetails.currentTemperature.toFloat()
             val tempInCelsius = convertKelvinToCelcius(tempInKelvin).toString()
                 .substringBefore(ApplicationConstants.DOT_DELIMITTER) + ApplicationConstants.CELSIUS_REPRESENTATION
 
-            tvLocation.text = openWeatherResponse.city
-            tvDateTime.text = ""
-            tvCurrentTemperature.text = tempInCelsius
-            tvWeaterDescription.text = openWeatherResponse.climate[0].climateTitle
-        }else if(openWeatherResponse.txnStatus.equals(ApplicationConstants.TXN_STATUS_404)){
+            populateDate(openWeatherResponse, tempInCelsius)
+        } else if (openWeatherResponse.txnStatus.equals(ApplicationConstants.TXN_STATUS_404)) {
             CommonUtils.showAlertDialog(this, openWeatherResponse.txnMessage, false)
-        }else{
+        } else {
             CommonUtils.showAlertDialog(this, getString(R.string.something_went_wrong), false)
         }
     }
@@ -80,4 +79,13 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
     private fun convertKelvinToCelcius(tempInKelvin: Float): Float {
         return tempInKelvin - ApplicationConstants.KELVIN_DIFFERENCE
     }
+
+    private fun populateDate(openWeatherResponse: OpenWeatherResponse, tempInCelsius: String){
+        tvLocation.text = openWeatherResponse.city
+        tvDateTime.text = CommonUtils.getCurrentDateAndTime()
+        tvCurrentTemperature.text = tempInCelsius
+        tvWeaterDescription.text = openWeatherResponse.climate[0].climateTitle
+    }
+
+
 }

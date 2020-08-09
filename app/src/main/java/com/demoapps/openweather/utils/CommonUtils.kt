@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.view.Window
 import com.demoapps.openweather.R
 import kotlinx.android.synthetic.main.alert_dialog_layout.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 object CommonUtils {
 
@@ -45,5 +47,11 @@ object CommonUtils {
         alertDialog.window?.setLayout(screenWidth-200, ViewGroup.LayoutParams.WRAP_CONTENT)
         alertDialog.window?.setGravity(Gravity.CENTER)
         return alertDialog
+    }
+
+    fun getCurrentDateAndTime() : String {
+        val simpleDateFormat = SimpleDateFormat(ApplicationConstants.DATE_FORMAT, Locale.ENGLISH)
+        val currentDate = simpleDateFormat.format(Date())
+        return currentDate
     }
 }

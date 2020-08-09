@@ -131,8 +131,8 @@
 
                 <ImageView
                     android:id="@+id/ivSunrise"
-                    android:layout_width="@dimen/dp_60"
-                    android:layout_height="@dimen/dp_60"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_50"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentTop="true"
                     android:src="@drawable/sunrise_filled"
@@ -165,8 +165,8 @@
 
                 <ImageView
                     android:id="@+id/ivWind"
-                    android:layout_width="@dimen/dp_60"
-                    android:layout_height="@dimen/dp_60"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_50"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/wind"
@@ -198,8 +198,8 @@
 
                 <ImageView
                     android:id="@+id/ivFeelsLike"
-                    android:layout_width="@dimen/dp_60"
-                    android:layout_height="@dimen/dp_60"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_50"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/temperature"
