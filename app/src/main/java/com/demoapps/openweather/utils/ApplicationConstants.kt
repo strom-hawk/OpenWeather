@@ -19,4 +19,6 @@ object ApplicationConstants {
     val CLEAR= "Clear"
     val RAIN = "Rain"
     val THUNDERSTORM = "Thunderstorm"
+    val MORNING_SHIFT = 6
+    val EVENING_SHIFT = 18
 }
