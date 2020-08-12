@@ -34,7 +34,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:paddingStart="@dimen/dp_10"
                 android:paddingEnd="@dimen/dp_10"
-                android:textColor="@color/deep_sky"/>
+                android:textColor="@color/deep_sky"
+                android:maxLines="1"/>
 
             <ImageButton
                 android:id="@+id/getWeaterButton"

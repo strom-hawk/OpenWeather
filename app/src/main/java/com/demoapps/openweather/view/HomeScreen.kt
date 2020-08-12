@@ -45,17 +45,17 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
 
     private fun bindView() {
         getWeaterButton.setOnClickListener {
-            validateAndProceed()
+            if(validateAndProceed(etCity.text.toString())){
+                Router.city = etCity.text.toString()
+                homeScreenViewModel?.getCityWeatherDetails()
+            }else{
+                CommonUtils.showAlertDialog(this, getString(R.string.invalid_city_name), false)
+            }
         }
     }
 
-    private fun validateAndProceed() {
-        if (etCity.text.toString().equals(ApplicationConstants.EMPTY_STRING)) {
-            CommonUtils.showAlertDialog(this, getString(R.string.invalid_city_name), false)
-        } else {
-            Router.city = etCity.text.toString()
-            homeScreenViewModel?.getCityWeatherDetails()
-        }
+    fun validateAndProceed(cityName: String): Boolean{
+        return (!cityName.equals(ApplicationConstants.EMPTY_STRING))
     }
 
     override fun onApiCalled() {}
@@ -82,7 +82,7 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
         }
     }
 
-    private fun convertKelvinToCelcius(tempInKelvin: Float): Float {
+    fun convertKelvinToCelcius(tempInKelvin: Float): Float {
         return tempInKelvin - ApplicationConstants.KELVIN_DIFFERENCE
     }
 
@@ -115,12 +115,8 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
     }
 
     private fun getLatLong() {
-        if (ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, FINE_LOCATION_PERMISSION, REQUEST_LOCATION);
         } else {
             val locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
@@ -140,45 +136,21 @@ class HomeScreen : ActivityBase(), WeatherDetailsFlowCallBack {
         val calendar = Calendar.getInstance()
         val hours = calendar.get(Calendar.HOUR_OF_DAY)
         if (hours >= ApplicationConstants.MORNING_SHIFT && hours <= ApplicationConstants.EVENING_SHIFT) {
-            if (openWeatherResponse.climate[0].climateTitle.equals(
-                    ApplicationConstants.CLEAR,
-                    ignoreCase = false
-                )
-            ) {
+            if (openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.CLEAR, ignoreCase = false)) {
                 ivWeather.setImageResource(R.drawable.sun)
-            } else if (openWeatherResponse.climate[0].climateTitle.equals(
-                    ApplicationConstants.RAIN,
-                    ignoreCase = false
-                )
-            ) {
+            } else if (openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.RAIN, ignoreCase = false)) {
                 ivWeather.setImageResource(R.drawable.sun_clouds_rain)
-            } else if (openWeatherResponse.climate[0].climateTitle.equals(
-                    ApplicationConstants.THUNDERSTORM,
-                    ignoreCase = false
-                )
-            ) {
+            } else if (openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.THUNDERSTORM, ignoreCase = false)) {
                 ivWeather.setImageResource(R.drawable.sun_clouds_rain_thunder)
             } else {
                 ivWeather.setImageResource(R.drawable.sun_clouds)
             }
         } else {
-            if (openWeatherResponse.climate[0].climateTitle.equals(
-                    ApplicationConstants.CLEAR,
-                    ignoreCase = false
-                )
-            ) {
+            if (openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.CLEAR, ignoreCase = false)) {
                 ivWeather.setImageResource(R.drawable.moon)
-            } else if (openWeatherResponse.climate[0].climateTitle.equals(
-                    ApplicationConstants.RAIN,
-                    ignoreCase = false
-                )
-            ) {
+            } else if (openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.RAIN, ignoreCase = false)) {
                 ivWeather.setImageResource(R.drawable.moon_rain_clouds)
-            } else if (openWeatherResponse.climate[0].climateTitle.equals(
-                    ApplicationConstants.THUNDERSTORM,
-                    ignoreCase = false
-                )
-            ) {
+            } else if (openWeatherResponse.climate[0].climateTitle.equals(ApplicationConstants.THUNDERSTORM, ignoreCase = false)) {
                 ivWeather.setImageResource(R.drawable.moon_rain_clouds_thunder)
             } else {
                 ivWeather.setImageResource(R.drawable.moon_clouds)
