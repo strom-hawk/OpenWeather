@@ -7,4 +7,6 @@
     <color name="editTextColor1">#ced6e0</color>
     <color name="colorWhite">#ffffff</color>
     <color name="iconTint">#a4b0be</color>
+    <color name="deep_sky">#434343</color>
+    <color name="colorBlack">#000000</color>
 </resources>
