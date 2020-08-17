@@ -3,7 +3,7 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="location">City</string>
     <string name="time_date">Time and date will appear here</string>
-    <string name="demo_weather">22°C</string>
+    <string name="demo_weather">0°C</string>
     <string name="current_weather_description">Current weather description will appear here</string>
     <string name="city_search_box_hint">Enter city name</string>
     <string name="sunrise_textView">Sunrise</string>

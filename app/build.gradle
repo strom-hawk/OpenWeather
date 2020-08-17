@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
 
     //OKHTTP CLIENT AND INTERCEPTOR
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
     //RETROFIT DEPENDENCIES
@@ -63,4 +63,7 @@ dependencies {
     testImplementation "org.powermock:powermock-classloading-xstream:1.6.5"
     testImplementation 'com.android.support.test:runner:1.0.2'
     testImplementation 'org.mockito:mockito-inline:2.13.0'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:3.9.0"
+    androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
 }

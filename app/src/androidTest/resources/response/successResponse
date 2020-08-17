@@ -1,0 +1,43 @@
+{
+  "coord": {
+    "lon": 84.68,
+    "lat": 23.43
+  },
+  "weather": [
+    {
+      "id": 721,
+      "main": "Haze",
+      "description": "haze",
+      "icon": "50d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 323.15,
+    "feels_like": 306.43,
+    "temp_min": 302.15,
+    "temp_max": 302.15,
+    "pressure": 1000,
+    "humidity": 74
+  },
+  "visibility": 4000,
+  "wind": {
+    "speed": 2.1,
+    "deg": 240
+  },
+  "clouds": {
+    "all": 75
+  },
+  "dt": 1597663929,
+  "sys": {
+    "type": 1,
+    "id": 9131,
+    "country": "IN",
+    "sunrise": 1597622288,
+    "sunset": 1597668770
+  },
+  "timezone": 19800,
+  "id": 1264839,
+  "name": "Lohārdagā",
+  "cod": 200
+}
